@@ -60,20 +60,20 @@ npm start
 
 ---
 
-## 🚧 Roadmap — Próxima Versão
+## 🚧 Roadmap — Next Version
 
-📌 As melhorias abaixo estão planejadas para a próxima versão do componente:
+📌 The following improvements are planned for an upcoming release:
 
-- 🗓️ **Data de comparação configurável**  
-  Permitir que o controle compare com outra coluna de data (além da data atual) para cenários como "prazo desde criação", "prazo desde aprovação", etc.
+- 🗓️ **Custom comparison date**  
+  Allow users to compare the countdown against another date column from the Dataverse (instead of always using the current date). Useful for scenarios like “X days since approval” or “due after creation date”.
 
-- ⚙️ **Estágios customizáveis**  
-  Suporte para configurar o número de estágios, permitindo 2, 3 ou até 5 fases com nomes e limites próprios.
+- ⚙️ **Custom stage configuration**  
+  Support for configuring a custom number of stages (e.g., 2, 3, 5) with individual labels and thresholds.
 
-- 🎨 **Ícones opcionais**  
-  Adição de suporte a ícones (SVG, emojis ou classes CSS) por estágio — exibidos ao lado do texto ou substituindo o texto por completo.
+- 🎨 **Optional icons**  
+  Support for adding icons (emoji, SVG, or CSS classes) to each stage — shown next to or instead of the text label.
 
-💡 Tem alguma sugestão? Abra uma [issue](../../issues) ou envie um PR!
+💡 Have a suggestion? Open an [issue](../../issues) or submit a PR!
 
 ---
 
