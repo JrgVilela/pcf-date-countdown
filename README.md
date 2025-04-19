@@ -75,5 +75,5 @@ npm start
 
 ## 🧠 Author
 
-Developed with 💻 by Jorge Vilela
+Developed with 💻 by Jorge Vilela.
 Open to contributions, suggestions and Power Platform collabs!
