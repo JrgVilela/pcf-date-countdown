@@ -1,52 +1,175 @@
+import { stat } from "fs";
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 
-export class DateCountDown implements ComponentFramework.StandardControl<IInputs, IOutputs> {
-    /**
-     * Empty constructor.
-     */
-    constructor() {
-        // Empty
+export class DateCountDown
+  implements ComponentFramework.StandardControl<IInputs, IOutputs>
+{
+  private _container: HTMLDivElement;
+  private _notifyOutputChanged: () => void;
+  private _value: Date | undefined;
+  private _diasAviso: number;
+
+  public init(
+    context: ComponentFramework.Context<IInputs>,
+    notifyOutputChanged: () => void,
+    state: ComponentFramework.Dictionary,
+    container: HTMLDivElement
+  ): void {
+    this._container = container;
+    this._notifyOutputChanged = notifyOutputChanged;
+    this._value = context.parameters.value?.raw ?? undefined;
+    this._diasAviso = context.parameters.diasAviso?.raw ?? 3;
+
+    this.render(context);
+  }
+
+  public updateView(context: ComponentFramework.Context<IInputs>): void {
+    const value = context.parameters.value.raw;
+    if (value !== this._value) {
+      this._value = value ?? undefined;
     }
 
-    /**
-     * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
-     * Data-set values are not initialized here, use updateView.
-     * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to property names defined in the manifest, as well as utility functions.
-     * @param notifyOutputChanged A callback method to alert the framework that the control has new outputs ready to be retrieved asynchronously.
-     * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
-     * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
-     */
-    public init(
-        context: ComponentFramework.Context<IInputs>,
-        notifyOutputChanged: () => void,
-        state: ComponentFramework.Dictionary,
-        container: HTMLDivElement
-    ): void {
-        // Add control initialization code
+    const diasAviso = context.parameters.diasAviso?.raw ?? 3;
+    if (diasAviso !== this._diasAviso) {
+      this._diasAviso = diasAviso;
     }
 
+    this.render(context);
+  }
 
-    /**
-     * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
-     * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
-     */
-    public updateView(context: ComponentFramework.Context<IInputs>): void {
-        // Add code to update control view
+  public getOutputs(): IOutputs {
+    //eslint-disable-next-line no-debugger
+    debugger;
+    return {
+      value: this._value ?? undefined,
+    };
+  }
+
+  public destroy(): void {
+    // Add code to cleanup control if necessary
+  }
+
+  private render(context: ComponentFramework.Context<IInputs>) {
+    //eslint-disable-next-line no-debugger
+    debugger;
+
+    this._container.innerHTML = ""; // limpa conteúdo anterior
+
+    const dataAlvo = context.parameters.value.raw;
+    if (!dataAlvo) {
+      this._container.innerText = "Data não informada";
+      return;
     }
 
-    /**
-     * It is called by the framework prior to a control receiving new data.
-     * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as "bound" or "output"
-     */
-    public getOutputs(): IOutputs {
-        return {};
-    }
+    const textoDias = context.parameters.textoDias?.raw ?? "";
+    const hoje = new Date();
+    const alvo = new Date(dataAlvo);
+    const diasRestantes = this.calcularDiferencaDias(hoje, alvo);
 
-    /**
-     * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
-     * i.e. cancelling any pending remote calls, removing listeners, etc.
-     */
-    public destroy(): void {
-        // Add code to cleanup control if necessary
-    }
+    // Valores padrão
+    const estados = [
+      {
+        nome: "vencido",
+        diasCondicao: diasRestantes < 0,
+        texto:
+          context.parameters.textoVencido?.raw !== ""
+            ? context.parameters.textoVencido?.raw
+            : "",
+        backgroundColor:
+          context.parameters.corVencido?.raw !== ""
+            ? context.parameters.corVencido?.raw
+            : "#ccc", //"#e81123",
+        textColor:
+          context.parameters.textColorVencido?.raw !== ""
+            ? context.parameters.textColorVencido?.raw
+            : "#000",
+      },
+      {
+        nome: "venceHoje",
+        diasCondicao: diasRestantes === 0,
+        texto:
+          context.parameters.textoVenceHoje?.raw !== ""
+            ? context.parameters.textoVenceHoje?.raw
+            : "",
+        backgroundColor:
+          context.parameters.corVenceHoje?.raw !== ""
+            ? context.parameters.corVenceHoje?.raw
+            : "#ccc", //"#f7630c",
+        textColor:
+          context.parameters.textColorVenceHoje?.raw !== ""
+            ? context.parameters.textColorVenceHoje?.raw
+            : "#000",
+      },
+      {
+        nome: "aVencer",
+        diasCondicao: diasRestantes <= this._diasAviso,
+        texto:
+          context.parameters.textoAVencer?.raw !== ""
+            ? context.parameters.textoAVencer?.raw
+            : "",
+        backgroundColor:
+          context.parameters.corAVencer?.raw !== ""
+            ? context.parameters.corAVencer?.raw
+            : "#ccc", //"#fff100",
+        textColor:
+          context.parameters.textColorAVencer?.raw !== ""
+            ? context.parameters.textColorAVencer?.raw
+            : "#000",
+      },
+      {
+        nome: "emDia",
+        diasCondicao: diasRestantes > this._diasAviso,
+        texto:
+          context.parameters.textoEmDia?.raw !== ""
+            ? context.parameters.textoEmDia?.raw
+            : "",
+        backgroundColor:
+          context.parameters.corEmDia?.raw !== ""
+            ? context.parameters.corEmDia?.raw
+            : "#ccc", //"#107c10",
+        textColor:
+          context.parameters.textColorEmDia?.raw !== ""
+            ? context.parameters.textColorEmDia?.raw
+            : "#000",
+      },
+    ];
+
+    const statusAtual = estados.find((e) => e.diasCondicao);
+
+    // Cria o input
+    const input = document.createElement("input");
+    input.type = "date";
+    input.value = new Date(dataAlvo).toISOString().split("T")[0];
+    input.disabled = true;
+    input.className = "j-pcf-date-input";
+    this._container.appendChild(input);
+
+    // Cria o elemento visual
+    const statusDiv = document.createElement("div");
+    statusDiv.className = "j-pcf-date-status";
+    statusDiv.style.backgroundColor = statusAtual?.backgroundColor ?? "#ccc";
+    statusDiv.style.color = statusAtual?.textColor ?? "#000";
+
+    const texto = `${diasRestantes} ${textoDias} ${statusAtual?.texto}`;
+    statusDiv.innerText = texto;
+    statusDiv.title = texto;
+
+    const divField = document.createElement("div");
+    divField.className = "j-pcf-date-field";
+    divField.style.display = "inline-flex";
+
+    divField.appendChild(input);
+    divField.appendChild(statusDiv);
+
+    this._container.appendChild(divField);
+    // this._container.appendChild(input);
+    // this._container.appendChild(statusDiv);
+  }
+
+  private calcularDiferencaDias(data1: Date, data2: Date): number {
+    const d1 = new Date(data1.getFullYear(), data1.getMonth(), data1.getDate());
+    const d2 = new Date(data2.getFullYear(), data2.getMonth(), data2.getDate());
+    const diff = d2.getTime() - d1.getTime();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
+  }
 }

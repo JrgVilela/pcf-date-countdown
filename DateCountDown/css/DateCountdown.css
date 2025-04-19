@@ -1,0 +1,36 @@
+.j-pcf-date-input {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #323130;
+  padding: 6px 10px;
+  border: 1px solid #8a8886;
+  outline: none;
+  width: fit-content;
+  box-sizing: border-box;
+  background-color: white;
+  transition: border-color 0.2s ease;
+
+  /* border-radius: 4px; */
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.j-pcf-date-input:focus {
+  border-color: #0078d4; /* Fluent primary */
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+}
+
+.j-pcf-date-status {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+  width: auto;
+  max-width: 120px;
+  white-space: nowrap; /* impede quebra de linha */
+  overflow: hidden; /* esconde o texto que ultrapassa a largura da div */
+  text-overflow: ellipsis; /* adiciona reticências no final do texto */
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 8px 10px;
+}
