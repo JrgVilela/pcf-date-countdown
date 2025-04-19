@@ -38,8 +38,6 @@ export class DateCountDown
   }
 
   public getOutputs(): IOutputs {
-    //eslint-disable-next-line no-debugger
-    debugger;
     return {
       value: this._value ?? undefined,
     };
@@ -50,9 +48,6 @@ export class DateCountDown
   }
 
   private render(context: ComponentFramework.Context<IInputs>) {
-    //eslint-disable-next-line no-debugger
-    debugger;
-
     this._container.innerHTML = ""; // limpa conteúdo anterior
 
     const dataAlvo = context.parameters.value.raw;
@@ -162,8 +157,6 @@ export class DateCountDown
     divField.appendChild(statusDiv);
 
     this._container.appendChild(divField);
-    // this._container.appendChild(input);
-    // this._container.appendChild(statusDiv);
   }
 
   private calcularDiferencaDias(data1: Date, data2: Date): number {
