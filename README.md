@@ -49,9 +49,9 @@ A customizable PCF (PowerApps Component Framework) control that displays a **cou
 2. Bind to a `Date` field and configure the input parameters.
 3. Enjoy real-time visual feedback as the deadline approaches or passes.
 
----
+<!-- --- -->
 
-## 📁 Project Structure
+<!-- ## 📁 Project Structure
 
 DateCountdown/
 ├── index.ts # Main logic
@@ -60,7 +60,7 @@ DateCountdown/
 │ └── DateCountdown.css # Visual styles
 ├── package.json
 ├── tsconfig.json
-└── README.md
+└── README.md -->
 
 ---
 
@@ -70,6 +70,8 @@ DateCountdown/
 npm install
 npm start
 ```
+
+---
 
 ## 🧠 Author
 
