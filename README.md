@@ -40,7 +40,6 @@ A customizable PCF (PowerApps Component Framework) control that displays a **cou
 | `corVencido`     | Color for “overdue” status          |
 | `corTextoStatus` | Font color for all statuses         |
 | `textoDias`      | Custom text for “days left” label   |
-| ---------------- | ----------------------------------- |
 
 ---
 
@@ -52,9 +51,27 @@ A customizable PCF (PowerApps Component Framework) control that displays a **cou
 
 ---
 
+## 📁 Project Structure
+
+DateCountdown/
+├── index.ts # Main logic
+├── ControlManifest.Input.xml # PCF configuration
+├── css/
+│ └── DateCountdown.css # Visual styles
+├── package.json
+├── tsconfig.json
+└── README.md
+
+---
+
 ## 🧪 Local Testing
 
 ```bash
 npm install
 npm start
 ```
+
+## 🧠 Author
+
+Developed with 💻 by Jorge Vilela
+Open to contributions, suggestions and Power Platform collabs!
